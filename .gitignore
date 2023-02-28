@@ -1,0 +1,8 @@
+packer_cache
+
+iso/*
+
+example.pkrvars.hcl
+*.auto.pkrvars.hcl
+
+*.log
