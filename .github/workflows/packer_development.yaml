@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and deploy images to proxmox-development
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
   packer:
     runs-on: [self-hosted, proxmox-development]
-    name: Run Packer
+    name: Run packer init, validate and build
     steps:
       - name: Checkout
         uses: actions/checkout@v3
