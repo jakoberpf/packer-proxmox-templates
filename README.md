@@ -1,31 +1,8 @@
 # packer-proxmox-templates
 
-A collection pf proxmox images and templates built with Hashicorp Packer.
+A collection pf Proxmox images and templates built with Hashicorp Packer.
 
-## Links
-- https://serverfault.com/questions/842315/removing-install-user-with-packer
-- https://github.com/Azure/aks-engine/issues/899
-- https://github.com/cisagov/skeleton-packer/issues/6
-- https://www.endpoint.com/blog/2014/03/14/provisioning-development-environment_14
-- https://github.com/dustinrue/proxmox-packer/blob/master/centos8/packer.json
-- https://github.com/hashicorp/packer/issues/8463
-- https://everythingshouldbevirtual.com/Ubuntu-20.04-cloud-init-gotchas/
-- https://wiki.ubuntu.com/DashAsBinSh
-- https://github.com/hashicorp/packer/issues/9115#issuecomment-688991546
-- https://gist.github.com/s3rj1k/55b10cd20f31542046018fcce32f103e
-- https://gist.github.com/thde/5312a42665c5c901aef4
-- https://github.com/chriswayg/packer-proxmox-templates/blob/master/alpine-3-amd64-proxmox/alpine-3-amd64-proxmox.json
-- https://github.com/bobfraser1/packer-alpine/blob/main/alpine.json
-- https://github.com/stvnjacobs/packer-alpine/blob/master/alpine.json
-- https://medium.com/@victor.oliveira.comp/provision-proxmox-vms-with-ansible-quick-and-easy-107d781fd749
-- https://gist.github.com/imduffy15/2d6f3cd46efa2ff68286
-- https://serverfault.com/questions/991009/usepam-not-supported-anymore
-- https://github.com/camptocamp/puppet-accounts/issues/35
-
-
-https://github.com/chriswayg/packer-proxmox-templates
-https://github.com/chaddyc/packer-proxmox-template/blob/main/ubuntu-server-focal-docker.pkr.hcl
-https://opensourcegeeks.net/how-to-build-images-with-packer-for-proxmox/
+https://www.aerialls.eu/posts/ubuntu-server-2204-image-packer-subiquity-for-proxmox/
 
 ## Adding packer user with correct privileges
 
@@ -53,11 +30,32 @@ WSL2 runs a virtual network . If running packer on WSL2, some firewall and port-
 
 # Alpine cloud-init drive not loading
 
-cloud-init tries to mount the Proxmox cloud-init CDROM with the -t auto flag. iso9660 is not recognized by default in the virt alpine image. The 'isofs' module needs to be loaded in order for cloud-init to mount the proxmox cloud-init drive
+cloud-init tries to mount the Proxmox cloud-init CDROM with the -t auto flag. iso9660 is not recognized by default in the virt alpine image. The 'isofs' module needs to be loaded in order for cloud-init to mount the Proxmox cloud-init drive
 
 ```bash
 # Check if iso9660 is in /proc/filesystems
 cat /proc/filesystems
-
-
 ```
+
+## Links
+- https://serverfault.com/questions/842315/removing-install-user-with-packer
+- https://github.com/Azure/aks-engine/issues/899
+- https://github.com/cisagov/skeleton-packer/issues/6
+- https://www.endpoint.com/blog/2014/03/14/provisioning-development-environment_14
+- https://github.com/dustinrue/proxmox-packer/blob/master/centos8/packer.json
+- https://github.com/hashicorp/packer/issues/8463
+- https://everythingshouldbevirtual.com/Ubuntu-20.04-cloud-init-gotchas/
+- https://wiki.ubuntu.com/DashAsBinSh
+- https://github.com/hashicorp/packer/issues/9115#issuecomment-688991546
+- https://gist.github.com/s3rj1k/55b10cd20f31542046018fcce32f103e
+- https://gist.github.com/thde/5312a42665c5c901aef4
+- https://github.com/chriswayg/packer-proxmox-templates/blob/master/alpine-3-amd64-proxmox/alpine-3-amd64-proxmox.json
+- https://github.com/bobfraser1/packer-alpine/blob/main/alpine.json
+- https://github.com/stvnjacobs/packer-alpine/blob/master/alpine.json
+- https://medium.com/@victor.oliveira.comp/provision-proxmox-vms-with-ansible-quick-and-easy-107d781fd749
+- https://gist.github.com/imduffy15/2d6f3cd46efa2ff68286
+- https://serverfault.com/questions/991009/usepam-not-supported-anymore
+- https://github.com/camptocamp/puppet-accounts/issues/35
+- https://github.com/chriswayg/packer-proxmox-templates
+- https://github.com/chaddyc/packer-proxmox-template/blob/main/ubuntu-server-focal-docker.pkr.hcl
+- https://opensourcegeeks.net/how-to-build-images-with-packer-for-proxmox/
