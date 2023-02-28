@@ -161,7 +161,6 @@ variable "sockets" {
 variable "iso_url" {
   type        = string
   description = "URL to an ISO file to upload to Proxmox, and then boot from."
-  default     = "https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso"
 }
 
 variable "iso_storage_pool" {
