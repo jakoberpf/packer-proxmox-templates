@@ -1,7 +1,4 @@
-proxmox_host = "backup.proxmox.erpf.de"
 proxmox_port = 443
-proxmox_username = "packer@pve"
-// proxmox_password = ""
 proxmox_node = "backup"
 
 iso_url = "https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso"
