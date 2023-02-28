@@ -29,7 +29,7 @@ jobs:
       - name: Run `packer validate`
         id: validate
         working-directory: ./ubuntu-20.04-amd64
-        run: "packer validate ."
+        run: "packer validate -var-file=./variables.development.pkrvars.hcl ."
 
       # - name: Run `packer deploy`
       #   id: validate
