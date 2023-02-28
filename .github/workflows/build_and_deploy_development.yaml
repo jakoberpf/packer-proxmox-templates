@@ -31,8 +31,8 @@ jobs:
         working-directory: ./ubuntu-20.04-amd64
         run: "packer validate -var-file=./variables.development.pkrvars.hcl ."
         env:
-          TF_VAR_proxmox_host: ${{ secrets.PROXMOX_HOST_DEVELOPMENT }}
-          TF_VAR_proxmox_username: ${{ secrets.PROXMOX_USERNAME_DEVELOPMENT }}
+          TF_VAR_proxmox_host: ${{ variables.PROXMOX_HOST_DEVELOPMENT }}
+          TF_VAR_proxmox_username: ${{ variables.PROXMOX_USERNAME }}
           TF_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_DEVELOPMENT }}
 
       # - name: Run `packer deploy`
