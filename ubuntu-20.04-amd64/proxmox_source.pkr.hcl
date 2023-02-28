@@ -9,9 +9,9 @@ source "proxmox" "ubuntu" {
   template_description = var.template_description
   vm_id                = var.template_vm_id
 
-  iso_url          = local.use_iso_file ? null : var.iso_url
+  iso_url          = var.iso_url # local.use_iso_file ? null : var.iso_url
   iso_storage_pool = var.iso_storage_pool
-  iso_file         = local.use_iso_file ? "${var.iso_storage_pool}:iso/${var.iso_file}" : null
+  // iso_file         = local.use_iso_file ? "${var.iso_storage_pool}:iso/${var.iso_file}" : null
   iso_checksum     = var.iso_checksum
   unmount_iso      = true
 
