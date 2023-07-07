@@ -1,4 +1,4 @@
-name: Build and deploy images to proxmox-development
+name: Build and deploy images to proxmox mango cluster
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   packer:
-    runs-on: [self-hosted, proxmox-development]
+    runs-on: ubuntu-latest
     name: Run packer init, validate and build
     steps:
       - name: Checkout

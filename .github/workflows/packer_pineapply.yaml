@@ -1,4 +1,4 @@
-name: Build and deploy images to proxmox-backup
+name: Build and deploy images to proxmox pineapple cluster
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   packer:
-    runs-on: [self-hosted, proxmox-backup]
+    runs-on: ubuntu-latest
     name: Run packer init, validate and build
     steps:
       - name: Checkout
