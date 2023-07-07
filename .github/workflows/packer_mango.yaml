@@ -10,10 +10,28 @@ on:
 jobs:
   packer:
     runs-on: ubuntu-latest
+    environment: mango
     name: Run packer init, validate and build
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          tlsSkipVerify: true
+          role: runner-github
+          method: jwt
+          jwtGithubAudience: sigstore # set the GitHub token's aud claim
+          secrets: |
+              secret/data/ci/aws accessKey | AWS_ACCESS_KEY_ID ;
+              secret/data/ci/aws secretKey | AWS_SECRET_ACCESS_KEY ;
+              secret/data/ci npm_token
 
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
