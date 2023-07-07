@@ -27,7 +27,6 @@ jobs:
           tlsSkipVerify: true
           role: runner-github
           method: jwt
-          jwtGithubAudience: sigstore # set the GitHub token's aud claim
           secrets: |
               CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
               CICD/global/ssh/automation PUBLIC_KEY_SSH | SSH_PUBLIC_KEY ;
