@@ -9,10 +9,27 @@ on:
 jobs:
   packer:
     runs-on: ubuntu-latest
+    environment: pineapple
     name: Run packer init, validate and build
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          tlsSkipVerify: true
+          role: runner-github
+          method: jwt
+          jwtGithubAudience: sigstore # set the GitHub token's aud claim
+          secrets: |
+              CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
+              CICD/global/ssh/automation PUBLIC_KEY_SSH | SSH_PUBLIC_KEY ;
 
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
@@ -28,25 +45,48 @@ jobs:
           version: "latest"
 
       - name: Run `packer init`
-        id: init
-        working-directory: ./ubuntu-20.04-amd64
+        id: init-alpine
+        working-directory: ./alpine-3-amd64
         run: "packer init ."
 
       - name: Run `packer validate`
-        id: validate
-        working-directory: ./ubuntu-20.04-amd64
-        run: "packer validate -var-file=./variables.backup.pkrvars.hcl ."
+        id: validate-alpine
+        working-directory: ./alpine-3-amd64
+        run: "packer validate -var-file=./variables.mango.pkrvars.hcl ."
         env:
-          PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST_BACKUP }}
+          PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
 
+      - name: Run `packer build`
+        id: build-alpine
+        working-directory: ./alpine-3-amd64
+        run: "packer build -var-file=./variables.mango.pkrvars.hcl ."
+        env:
+          PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+          PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
+          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
+
+      - name: Run `packer init`
+        id: init-ubuntu
+        working-directory: ./ubuntu-20.04-amd64
+        run: "packer init ."
+
+      # - name: Run `packer validate`
+      #   id: validate-ubuntu
+      #   working-directory: ./ubuntu-20.04-amd64
+      #   run: "packer validate -var-file=./variables.backup.pkrvars.hcl ."
+      #   env:
+      #     PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+      #     PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
+      #     PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
+
       # - name: Run `packer build`
-      #   id: build
+      #   id: build-ubuntu
       #   working-directory: ./ubuntu-20.04-amd64
       #   run: "packer build -var-file=./variables.backup.pkrvars.hcl ."
       #   env:
-      #     PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST_BACKUP }}
+      #     PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
       #     PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
       #     PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
     
