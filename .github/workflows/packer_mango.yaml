@@ -25,7 +25,7 @@ jobs:
         with:
           url: ${{ secrets.VAULT_ADDR }}
           tlsSkipVerify: true
-          role: runner-github
+          role: github-runner
           method: jwt
           secrets: |
               CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
