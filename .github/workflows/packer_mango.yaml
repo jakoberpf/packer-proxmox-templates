@@ -19,17 +19,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2
-        with:
-          url: ${{ secrets.VAULT_ADDR }}
-          tlsSkipVerify: true
-          role: github-runner-jakoberpf
-          method: jwt
-          secrets: |
-              CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
-              CICD/global/ssh/automation PUBLIC_KEY_SSH | SSH_PUBLIC_KEY ;
+      # - name: Import Secrets
+      #   id: import-secrets
+      #   uses: hashicorp/vault-action@v2
+      #   with:
+      #     url: ${{ secrets.VAULT_ADDR }}
+      #     tlsSkipVerify: true
+      #     role: github-runner-jakoberpf
+      #     method: jwt
+      #     secrets: |
+      #         CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
 
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
