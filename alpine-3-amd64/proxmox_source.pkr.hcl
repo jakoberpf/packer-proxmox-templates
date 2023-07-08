@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.1.2"
+      source  = "github.com/hashicorp/proxmox"
+    }
+  }
+} 
+
 source "proxmox-iso" "alpine" {
   proxmox_url              = "https://${var.proxmox_host}:${var.proxmox_port}/api2/json"
   node                     = var.proxmox_node

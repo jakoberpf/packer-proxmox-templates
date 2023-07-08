@@ -1,4 +1,4 @@
-proxmox_host = "192.168.0.135"
+proxmox_host = "172.30.119.60"
 proxmox_node = "dev"
 
 proxmox_skip_verify_tls = true
