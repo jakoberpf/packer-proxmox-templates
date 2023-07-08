@@ -30,7 +30,7 @@ jobs:
           url: ${{ secrets.VAULT_ADDR }}
           tlsSkipVerify: true
           role: github-runner-jakoberpf
-          path: jwt-github
+          # path: jwt-github
           method: jwt
           jwtGithubAudience: repository
           secrets: |
