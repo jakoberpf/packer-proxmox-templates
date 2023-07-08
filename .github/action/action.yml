@@ -43,9 +43,6 @@ runs:
             ;;
           esac
 
-          echo "⏁  Authorizing Runner to ZeroTier network"
-          curl -s -X POST -H "Authorization: token ${{ inputs.auth_token }}" -d '{"config":{"authorized":true}}' "${{ inputs.api_url }}/network/${{ inputs.network_id }}/member/${member_id}"
-
           echo "⏁  Joining ZeroTier Network ID: ${{ inputs.network_id }}"
           case $(uname -s) in
             MINGW64_NT?*)
@@ -57,6 +54,9 @@ runs:
               while ! sudo zerotier-cli listnetworks | grep ${{ inputs.network_id }} | grep OK ; do sleep 0.5 ; done
               ;;
           esac
+
+          echo "⏁  Authorizing Runner to ZeroTier network"
+          while ! curl -s -X POST -H "Authorization: token ${{ inputs.auth_token }}" -d '{"config":{"authorized":true}}' "${{ inputs.api_url }}/network/${{ inputs.network_id }}/member/${member_id}" | grep '"authorized":true' ; do sleep 0.5 ; done
 
         post: |
           set -euo pipefail
