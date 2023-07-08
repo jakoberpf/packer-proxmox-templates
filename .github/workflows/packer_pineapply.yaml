@@ -28,7 +28,7 @@ jobs:
         with:
           url: ${{ secrets.VAULT_ADDR }}
           tlsSkipVerify: true
-          role: github-runner
+          role: github-runner-jakoberpf
           method: jwt
           jwtGithubAudience: repository
           secrets: |
