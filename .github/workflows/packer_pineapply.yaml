@@ -18,6 +18,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: perform token run
+        run: |
+          echo $(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=jakoberpf" | base64)
+
       - name: Import Secrets
         id: import-secrets
         uses: hashicorp/vault-action@v2
