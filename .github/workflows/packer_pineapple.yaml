@@ -30,7 +30,7 @@ jobs:
       #         CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
 
       - name: ZeroTier
-        uses: jakoberpf/github-action-zerotier # zerotier/github-action@v1.0.1
+        uses: jakoberpf/github-action-zerotier@main # zerotier/github-action@v1.0.1
         with:
           network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
           auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
