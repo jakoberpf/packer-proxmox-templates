@@ -58,7 +58,7 @@ variable "template_vm_id" {
 variable "ssh_private_key_file" {
   type        = string
   description = "Path to private key file for SSH authentication."
-  default     = null
+  default     = null # "~/.ssh/id_rsa"
 }
 
 variable "ssh_public_key" {
