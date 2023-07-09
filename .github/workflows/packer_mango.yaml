@@ -30,6 +30,11 @@ jobs:
       #     secrets: |
       #         CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
 
+      - name: Setup SSH Key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+
       - name: ZeroTier
         uses: jakoberpf/github-action-zerotier@main # zerotier/github-action@v1.0.1
         with:
