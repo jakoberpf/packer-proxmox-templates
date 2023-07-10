@@ -156,6 +156,7 @@ variable "sockets" {
 variable "iso_url" {
   type        = string
   description = "URL to an ISO file to upload to Proxmox, and then boot from."
+  default     = null
 }
 
 variable "iso_storage_pool" {
@@ -167,11 +168,13 @@ variable "iso_storage_pool" {
 variable "iso_file" {
   type        = string
   description = "Filename of the ISO file to boot from."
+  default     = null
 }
 
 variable "iso_checksum" {
   type        = string
   description = "Checksum of the ISO file."
+  default     = null
 }
 
 variable "http_server_host" {
