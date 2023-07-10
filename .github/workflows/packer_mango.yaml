@@ -58,18 +58,18 @@ jobs:
         working-directory: ./alpine-3-amd64
         run: "packer validate -var-file=./variables.mango.pkrvars.hcl ."
         env:
-          PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+          # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
-          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
+          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
       - name: Run `packer build`
         id: build-alpine
         working-directory: ./alpine-3-amd64
         run: "packer build -var-file=./variables.mango.pkrvars.hcl ."
         env:
-          PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+          # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
-          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD_BACKUP }}
+          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
       - name: Run `packer init`
         id: init-ubuntu
