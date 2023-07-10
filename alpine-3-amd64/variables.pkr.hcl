@@ -156,7 +156,6 @@ variable "sockets" {
 variable "iso_url" {
   type        = string
   description = "URL to an ISO file to upload to Proxmox, and then boot from."
-  default     = "http://dl-cdn.alpinelinux.org/alpine/v3.15/releases/x86_64/alpine-virt-3.15.0-x86_64.iso"
 }
 
 variable "iso_storage_pool" {
@@ -168,13 +167,11 @@ variable "iso_storage_pool" {
 variable "iso_file" {
   type        = string
   description = "Filename of the ISO file to boot from."
-  default     = null # "alpine-virt-3.15.0-x86_64.iso"
 }
 
 variable "iso_checksum" {
   type        = string
   description = "Checksum of the ISO file."
-  default     = null
 }
 
 variable "http_server_host" {
