@@ -41,6 +41,10 @@ jobs:
           auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
           api_url: ${{ secrets.ZEROTIER_API_URL }}
 
+      - name: Ping cluster hosts
+        run: |
+          ping 172.30.119.190
+
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         id: setup
