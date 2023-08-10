@@ -69,7 +69,7 @@ jobs:
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
-      - name: Run 'qm destroy'
+      - name: Run 'qm destroy' # cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 172.30.119.60 # ${{ secrets.HOST }}
@@ -87,7 +87,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22 # ${{ secrets.PORT }}
           script: |
-            git clone git@github.com:jakoberpf/packer-proxmox-templates.git
-            export PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
-            exoprt PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
-            cd packer-proxmox-templates/${{ matrix.version }} && packer init . && packer build -var-file=./variables.mango.pkrvars.hcl . 
+            git clone https://github.com/jakoberpf/packer-proxmox-templates.git && cd packer-proxmox-templates/${{ matrix.version }}
+            PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }} PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }} packer init . && packer build -var-file=./variables.mango.pkrvars.hcl .
