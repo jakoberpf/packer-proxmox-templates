@@ -59,6 +59,8 @@ jobs:
         id: init
         working-directory: ./${{ matrix.version }}
         run: "packer init ."
+        env:
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run `packer validate`
         id: validate
