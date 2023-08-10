@@ -56,12 +56,12 @@ jobs:
           version: "latest"
 
       - name: Run `packer init`
-        id: init-alpine
+        id: init
         working-directory: ./${{ matrix.version }}
         run: "packer init ."
 
       - name: Run `packer validate`
-        id: validate-alpine
+        id: validate
         working-directory: ./${{ matrix.version }}
         run: "packer validate -var-file=./variables.mango.pkrvars.hcl ."
         env:
@@ -69,8 +69,18 @@ jobs:
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
+      - name: Cleanup previous builds
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 172.30.119.60 # ${{ secrets.HOST }}
+          username: root # ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22 # ${{ secrets.PORT }}
+          script: |
+            qm destroy 9040
+
       # - name: Run `packer build`
-      #   id: build-alpine
+      #   id: build
       #   working-directory: ./${{ matrix.version }}
       #   run: "packer build -var-file=./variables.mango.pkrvars.hcl ."
       #   env:
