@@ -77,7 +77,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22 # ${{ secrets.PORT }}
           script: |
-            qm destroy 9040
+            qm destroy 9040 || exit 0
 
       - name: Run `packer build`
         uses: appleboy/ssh-action@v1.0.0
