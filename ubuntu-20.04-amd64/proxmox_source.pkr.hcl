@@ -65,3 +65,12 @@ source "proxmox-iso" "ubuntu" {
   // Does not take boot disk storage pool as a default anymore.
   cloud_init_storage_pool = local.cloud_init_storage_pool
 }
+
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.1.2"
+      source  = "github.com/hashicorp/proxmox"
+    }
+  }
+}
