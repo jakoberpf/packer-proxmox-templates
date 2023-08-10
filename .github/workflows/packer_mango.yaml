@@ -91,6 +91,5 @@ jobs:
           script: |
             export TEMP_DIR=$(mktemp -d)
             git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
-            packer init .
+            packer init . && echo "Packer successfully innitialized"
             PKR_VAR_proxmox_username=${{ vars.PROXMOX_USERNAME }} PKR_VAR_proxmox_password=${{ secrets.PROXMOX_PASSWORD }} && packer build -var-file=./variables.mango.pkrvars.hcl .
-
