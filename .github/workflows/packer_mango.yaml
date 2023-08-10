@@ -74,13 +74,13 @@ jobs:
       - name: Run `packer build`
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 172.30.119.60 # ${{ secrets.HOST }}
-          username: root # ${{ secrets.USERNAME }}
+          host: 172.30.119.60
+          username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22 # ${{ secrets.PORT }}
+          port: 22
           script: |
             export TEMP_DIR=$(mktemp -d)
             git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
-            qm destroy $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) || exit 0 && echo "Remove previously build template"
+            qm destroy $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) || true && echo "Remove previously build template"
             packer init . && echo "Packer successfully innitialized"
             PKR_VAR_proxmox_username=${{ vars.PROXMOX_USERNAME }} PKR_VAR_proxmox_password=${{ secrets.PROXMOX_PASSWORD }} packer build -var-file=./variables.mango.pkrvars.hcl .
