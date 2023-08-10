@@ -1,4 +1,4 @@
-source "proxmox" "ubuntu" {
+source "proxmox-iso" "ubuntu" {
   proxmox_url              = "https://${var.proxmox_host}:${var.proxmox_port}/api2/json"
   node                     = var.proxmox_node
   username                 = var.proxmox_username
@@ -43,7 +43,7 @@ source "proxmox" "ubuntu" {
   http_port_max     = var.http_server_port
   vm_interface      = var.vm_interface
 
-  boot = null // "order=scsi0;ide2",
+  boot = null # "order=scsi0;ide2"
   boot_command = [
     "<esc><wait><esc><wait><f6><wait><esc><wait>",
     "<bs><bs><bs><bs><bs>",
@@ -64,5 +64,4 @@ source "proxmox" "ubuntu" {
   // latest proxmox API requires this to be set in order for a cloud init image to be created.
   // Does not take boot disk storage pool as a default anymore.
   cloud_init_storage_pool = local.cloud_init_storage_pool
-
 }

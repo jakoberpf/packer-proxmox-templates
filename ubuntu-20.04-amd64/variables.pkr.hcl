@@ -143,13 +143,13 @@ variable "disk_type" {
 variable "memory" {
   type        = number
   description = "How much memory, in megabytes, to give the virtual machine."
-  default     = 1024
+  default     = 4096
 }
 
 variable "cores" {
   type        = number
   description = "How many CPU cores to give the virtual machine."
-  default     = 1
+  default     = 2
 }
 
 variable "sockets" {
