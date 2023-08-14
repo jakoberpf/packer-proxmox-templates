@@ -46,7 +46,7 @@ jobs:
 
       - name: Ping cluster hosts
         run: |
-          ping -c 4 172.30.119.60
+          ping -c 15 172.30.119.60
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
