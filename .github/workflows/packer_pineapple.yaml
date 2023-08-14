@@ -84,6 +84,7 @@ jobs:
 
       - name: Run `packer build`
         uses: appleboy/ssh-action@v1.0.0
+        timeout-minutes: 20
         with:
           host: 172.30.28.221
           username: root
