@@ -84,12 +84,12 @@ jobs:
 
       - name: Run `packer build`
         uses: appleboy/ssh-action@v1.0.0
-        timeout-minutes: 20
         with:
           host: 172.30.28.221
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          command_timeout: 30m
           script: |
             export TEMP_DIR=$(mktemp -d)
             git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
