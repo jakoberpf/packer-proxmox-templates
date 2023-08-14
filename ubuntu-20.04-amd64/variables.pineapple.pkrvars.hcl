@@ -5,7 +5,7 @@ proxmox_skip_verify_tls = true
 
 template_vm_id = 9040
 
-disk_storage_pool = "glacier_disks_v1"
+disk_storage_pool = "local-lvm"
 
 iso_storage_pool = "glacier_replicated_v1"
 iso_url          = "https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso"
