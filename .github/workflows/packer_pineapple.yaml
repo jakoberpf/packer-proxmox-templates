@@ -46,34 +46,51 @@ jobs:
 
       - name: Ping cluster hosts
         run: |
-          ping -c 4 172.30.119.190
+          ping -c 4 172.30.28.221
 
-      - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
-        id: setup
-        with:
-          version: "latest"
+      # - name: Setup `packer`
+      #   uses: hashicorp/setup-packer@main
+      #   id: setup
+      #   with:
+      #     version: "latest"
 
-      - name: Run `packer init`
-        id: init-alpine
-        working-directory: ./${{ matrix.version }}
-        run: "packer init ."
-
-      - name: Run `packer validate`
-        id: validate-alpine
-        working-directory: ./${{ matrix.version }}
-        run: "packer validate -var-file=./variables.pineapple.pkrvars.hcl ."
-        env:
-          # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
-          PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
-          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
-
-      # - name: Run `packer build`
-      #   id: build-alpine
+      # - name: Run `packer init`
+      #   id: init
       #   working-directory: ./${{ matrix.version }}
-      #   run: "packer build -var-file=./variables.pineapple.pkrvars.hcl ."
+      #   run: "packer init ."
+      #   env:
+      #     PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Run `packer validate`
+      #   id: validate
+      #   working-directory: ./${{ matrix.version }}
+      #   run: "packer validate -var-file=./variables.pineapple.pkrvars.hcl ."
       #   env:
       #     # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
       #     PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
       #     PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
-    
+
+      - name: Run `packer build`
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 172.30.28.221
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export TEMP_DIR=$(mktemp -d)
+            git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
+            qm destroy $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) || true && echo "Remove previously build template"
+
+      - name: Run `packer build`
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 172.30.28.221
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export TEMP_DIR=$(mktemp -d)
+            git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
+            packer init . && echo "Packer successfully innitialized"
+            PACKER_LOG=1 PKR_VAR_proxmox_username=${{ vars.PROXMOX_USERNAME }} PKR_VAR_proxmox_password=${{ secrets.PROXMOX_PASSWORD }} packer build -var-file=./variables.pineapple.pkrvars.hcl .
