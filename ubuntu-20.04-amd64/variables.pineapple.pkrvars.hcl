@@ -1,4 +1,4 @@
-proxmox_host = "172.30.119.190"
+proxmox_host = "192.168.1.5"
 proxmox_node = "glacier"
 
 proxmox_skip_verify_tls = true
