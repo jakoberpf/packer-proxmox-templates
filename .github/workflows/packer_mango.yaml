@@ -37,16 +37,19 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
 
-      - name: ZeroTier
+      - name: ZeroTier - Proxmox
         uses: jakoberpf/github-action-zerotier@main # zerotier/github-action@v1.0.1
         with:
-          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID_PROXMOX }}
           auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
           api_url: ${{ secrets.ZEROTIER_API_URL }}
-
-      - name: Ping cluster hosts
-        run: |
-          ping -c 15 172.30.119.60
+  
+      - name: ZeroTier - Packer
+        uses: jakoberpf/github-action-zerotier@main # zerotier/github-action@v1.0.1
+        with:
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID_PACKER }}
+          auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+          api_url: ${{ secrets.ZEROTIER_API_URL }} 
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
