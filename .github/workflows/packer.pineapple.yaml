@@ -1,0 +1,75 @@
+name: Deploy to pineapple cluster
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  packer:
+    runs-on: [self-hosted, pineapple]
+    environment: pineapple
+    name: Run packer init, validate and build
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        version: [ubuntu-20.04-amd64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # - name: Import Secrets
+      #   id: import-secrets
+      #   uses: hashicorp/vault-action@v2
+      #   with:
+      #     url: ${{ secrets.VAULT_ADDR }}
+      #     tlsSkipVerify: true
+      #     role: github-runner-jakoberpf
+      #     method: jwt
+      #     secrets: |
+      #         CICD/global/ssh/automation PRIVAT_KEY_RSA_PEM | SSH_PRIVAT_KEY ;
+
+      - name: Setup packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: "latest"
+
+      - name: Initialize packer
+        id: init
+        working-directory: ./${{ matrix.version }}
+        run: "packer init ."
+        env:
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate packer configuration
+        id: validate
+        working-directory: ./${{ matrix.version }}
+        run: "packer validate -var-file=./variables.pineapple.pkrvars.hcl ."
+        env:
+          # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+          PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
+          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
+
+      - name: Cleanup previous build
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 192.168.1.5
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export TEMP_DIR=$(mktemp -d)
+            git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
+            qm destroy $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) || true && echo "Remove previously build template"
+
+      - name: Run `packer build`
+        id: build
+        working-directory: ./${{ matrix.version }}
+        run: "packer build -var-file=./variables.pineapple.pkrvars.hcl ."
+        env:
+          # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
+          PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
+          PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
