@@ -3,7 +3,7 @@ name: Deploy to mango cluster
 on:
   push:
     branches:
-      - main
+      - none
 
 jobs:
   packer:
