@@ -68,7 +68,7 @@ jobs:
       - name: Run `packer build`
         id: build
         working-directory: ./${{ matrix.version }}
-        run: "packer build -var-file=./variables.pineapple.pkrvars.hcl ."
+        run: "PACKER_LOG=1 packer build -var-file=./variables.pineapple.pkrvars.hcl ."
         env:
           # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
