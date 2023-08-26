@@ -1,0 +1,50 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: ${locale}
+  keyboard:
+    layout: ${keyboard_layout}
+    # variant: ${keyboard_variant}
+  # network:
+  #   network:
+  #     version: 2
+  #     ethernets:
+  #       mainif:
+  #         match:
+  #           name: e*
+  #         critical: true
+  #         dhcp4: true
+  #         dhcp-identifier: mac
+  ssh:
+    install-server: true
+    allow-pw: %{ if length(ssh_public_keys) > 0 }false%{ else }true%{ endif }
+    # disable_root: true
+    # ssh_quiet_keygen: true
+    # allow_public_ssh_keys: true
+  late-commands:
+    # - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0 ipv6.disable=1 biosdevname=0"/' /target/etc/default/grub
+    # - curtin in-target --target /target update-grub2
+    - curtin in-target --target=/target -- apt-get update
+    - curtin in-target --target=/target -- apt-get install qemu-guest-agent
+    - curtin in-target --target=/target -- systemctl start qemu-guest-agent
+    # - curtin in-target --target=/target -- systemctl enable qemu-guest-agent
+  # storage:
+  #   layout:
+  #     name: direct
+  #   swap:
+  #     size: 0
+  user-data:
+    timezone: ${ timezone }
+    users:
+      - name: ${ ssh_username }
+        passwd: ${ ssh_password }
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: %{ if length(ssh_public_keys) > 0 }true%{ else }false%{ endif }
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+%{ if length(ssh_public_keys) > 0 ~}
+        ssh_authorized_keys:
+%{ for key in ssh_public_keys ~}
+          - ${key}
+%{ endfor ~}
+%{ endif ~}
