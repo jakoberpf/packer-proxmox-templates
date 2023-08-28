@@ -45,10 +45,25 @@ source "proxmox-iso" "ubuntu" {
 
   boot = null # "order=scsi0;ide2"
   boot_command = [
-    "<esc><wait><esc><wait><f6><wait><esc><wait>",
-    "<bs><bs><bs><bs><bs>",
-    "autoinstall net.ifnames=0 biosdevname=0 ip=dhcp ipv6.disable=1 ds=nocloud-net;s=${local.http_url}/ ",
-    "--- <enter>"
+    "<esc><esc><esc><esc>e<wait>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "<del><del><del><del><del><del><del><del>",
+    "linux /casper/vmlinuz --- autoinstall ds=\"nocloud-net;seedfrom=${local.http_url}/\"<enter><wait>", # "autoinstall net.ifnames=0 biosdevname=0 ip=dhcp ipv6.disable=1 ds=nocloud-net;s=${local.http_url}/ ",
+    "initrd /casper/initrd<enter><wait>",
+    "boot<enter>",
+    "<enter><f10><wait>"
   ]
   boot_wait = "5s"
 
