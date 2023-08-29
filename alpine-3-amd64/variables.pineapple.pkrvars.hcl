@@ -3,7 +3,7 @@ proxmox_node = "glacier"
 
 proxmox_skip_verify_tls = true
 
-template_vm_id = 9030
+template_vm_id = 9020
 
 disk_storage_pool = "glacier_disks_v1"
 

@@ -3,7 +3,7 @@ proxmox_node = "dev"
 
 proxmox_skip_verify_tls = true
 
-template_vm_id = 9030
+template_vm_id = 9020
 
 disk_storage_pool = "local-zfs"
 
