@@ -3,7 +3,7 @@ proxmox_node = "glacier"
 
 proxmox_skip_verify_tls = true
 
-template_vm_id = 9040
+template_vm_id = 9043
 
 disk_storage_pool = "local-lvm"
 
