@@ -132,7 +132,7 @@ variable "disk_format" {
 variable "disk_type" {
   type        = string
   description = "The type of disk device to add."
-  default     = "scsi"
+  default     = "virtio"
 
   validation {
     condition     = contains(["ide", "sata", "scsi", "virtio"], var.disk_type)
@@ -143,7 +143,7 @@ variable "disk_type" {
 variable "memory" {
   type        = number
   description = "How much memory, in megabytes, to give the virtual machine."
-  default     = 4096
+  default     = 8192
 }
 
 variable "cores" {

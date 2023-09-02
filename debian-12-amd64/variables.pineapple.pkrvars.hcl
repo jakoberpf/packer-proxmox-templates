@@ -5,7 +5,8 @@ proxmox_skip_verify_tls = true
 
 template_vm_id = 9030
 
-disk_storage_pool = "local-lvm"
+disk_storage_pool       = "glacier_disks_v1"
+cloud_init_storage_pool = "glacier_disks_v1"
 
 iso_storage_pool = "glacier_replicated_v1"
 
