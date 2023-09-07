@@ -54,7 +54,7 @@ jobs:
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
-      - name: Cleanup previous build
+      - name: Cleanup previous template
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 192.168.1.5
@@ -66,7 +66,7 @@ jobs:
             git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
             qm destroy $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) || true && echo "Remove previously build template"
 
-      - name: Run `packer build`
+      - name: Build new template
         id: build
         working-directory: ./${{ matrix.version }}
         run: "PACKER_LOG=1 packer build -var-file=./variables.pineapple.pkrvars.hcl ."
@@ -74,3 +74,17 @@ jobs:
           # PKR_VAR_proxmox_host: ${{ vars.PROXMOX_HOST }}
           PKR_VAR_proxmox_username: ${{ vars.PROXMOX_USERNAME }}
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
+
+      - name: Post template configurations
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 192.168.1.5
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export TEMP_DIR=$(mktemp -d)
+            git clone https://github.com/jakoberpf/packer-proxmox-templates.git ${TEMP_DIR} && cd ${TEMP_DIR}/${{ matrix.version }} && echo "Repository successfully cloned"
+            qm set $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) --delete ide2
+            qm set $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) --delete ide0
+            qm set $(cat variables.pineapple.pkrvars.hcl | grep template_vm_id | cut -d "=" -f 2 | xargs) --ide2 $(cat variables.pineapple.pkrvars.hcl | grep cloud_init_storage_pool | cut -d "=" -f 2 | xargs):cloudinit
