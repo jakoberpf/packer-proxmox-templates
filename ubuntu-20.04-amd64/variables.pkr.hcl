@@ -161,7 +161,7 @@ variable "sockets" {
 variable "iso_url" {
   type        = string
   description = "URL to an ISO file to upload to Proxmox, and then boot from."
-  default     = "https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso"
+  default     = "https://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso"
 }
 
 variable "iso_storage_pool" {
@@ -179,7 +179,7 @@ variable "iso_file" {
 variable "iso_checksum" {
   type        = string
   description = "Checksum of the ISO file."
-  default     = "5035be37a7e9abbdc09f0d257f3e33416c1a0fb322ba860d42d74aa75c3468d4"
+  default     = "b8f31413336b9393ad5d8ef0282717b2ab19f007df2e9ed5196c13d8f9153c8b"
 }
 
 variable "http_server_host" {

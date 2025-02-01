@@ -1,4 +1,4 @@
-proxmox_host = "192.168.0.135"
+proxmox_host = "192.168.1.4"
 proxmox_node = "mango"
 
 proxmox_skip_verify_tls = true

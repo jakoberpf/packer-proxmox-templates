@@ -9,9 +9,9 @@ source "proxmox-iso" "ubuntu" {
   template_description = var.template_description
   vm_id                = var.template_vm_id
 
-  iso_url          = local.use_iso_file ? null : var.iso_url
+  iso_url          = var.iso_url # local.use_iso_file ? null :
   iso_storage_pool = var.iso_storage_pool
-  iso_file         = local.use_iso_file ? "${var.iso_storage_pool}:iso/${var.iso_file}" : null
+  # iso_file         = local.use_iso_file ? "${var.iso_storage_pool}:iso/${var.iso_file}" : null
   iso_checksum     = var.iso_checksum
   unmount_iso      = true
 
@@ -51,6 +51,10 @@ source "proxmox-iso" "ubuntu" {
     "--- <enter>"
   ]
   boot_wait = "5s"
+
+  serials = [
+    "socket"
+  ]
 
   ssh_handshake_attempts    = 100
   ssh_username              = var.ssh_username
