@@ -54,7 +54,7 @@ jobs:
           PKR_VAR_proxmox_password: ${{ secrets.PROXMOX_PASSWORD }}
 
       - name: Cleanup previous build
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: 192.168.1.135
           username: root
